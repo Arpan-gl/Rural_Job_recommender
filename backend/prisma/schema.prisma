@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+
+// Expanded User model to match requested shape
+model User {
+  id               String   @id @default(cuid())
+  name             String?
+  username         String?  // kept for backward compatibility
+  email            String   @unique
+  password         String?
+  phone            String?
+  location         String?
+  skills           String[] @default([])
+  experience_years Int?
+  preferred_roles  String[] @default([])
+  languages        String[] @default([])
+  matches          Match[]  // relation back to Match
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model Job {
+  id           String   @id @default(cuid())
+  title        String
+  company      String
+  location     String?
+  description  String?
+  requirements String[] @default([])
+  salary       String?
+  source       String?
+  url          String?
+  posted_at    DateTime?
+  matches      Match[]
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Match {
+  id              String       @id @default(cuid())
+  user            User         @relation(fields: [userId], references: [id])
+  userId          String
+  job             Job          @relation(fields: [jobId], references: [id])
+  jobId           String
+  match_score     Float
+  skills_matched  String[]     @default([])
+  skills_missing  String[]     @default([])
+  user_feedback   UserFeedback?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  @@index([userId])
+  @@index([jobId])
+  @@index([match_score])
+}
+
+enum UserFeedback {
+  applied
+  ignored
+  interested
+}
