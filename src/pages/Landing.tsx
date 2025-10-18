@@ -76,7 +76,7 @@ export default function Landing() {
                   to="/skills"
                   className="inline-flex items-center justify-center px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 duration-200"
                 >
-                  Start Now
+                  Get Started
                 </Link>
                 <a
                   href="#features"
