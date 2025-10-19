@@ -1,12 +1,13 @@
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Briefcase, Menu, X } from "lucide-react";
+import { Briefcase, Menu, X, User } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useSelector } from 'react-redux';
+import { Separator } from "../ui/separator";
 
 interface store {
-    isLogin: boolean;
+  isLogin: boolean;
 }
 
 const Navbar = () => {
@@ -17,14 +18,7 @@ const Navbar = () => {
 
   const navLinks = [
     { path: "/", label: "Home" },
-    { path: "/dashboard", label: "Dashboard" },
     { path: "/assistant", label: "Assistant" },
-  ];
-
-  const accountNavItems = !isLogin ? [
-    { name: 'Sign In', path: '/signIn' },
-  ] : [
-    {name:"Sign Out",path: "/signOut"}
   ];
 
   const isActive = (path: string) => location.pathname === path;
@@ -57,20 +51,31 @@ const Navbar = () => {
               {link.label}
             </Link>
           ))}
-          {accountNavItems.map((item) => (
+          {!isLogin ? (
             <Link
-              key={item.path}
-              to={item.path}
+              key="/signIn"
+              to="/signIn"
               className={cn(
                 "text-sm font-medium transition-colors hover:text-primary",
-                isActive(item.path)
+                isActive("/signIn")
                   ? "text-primary"
                   : "text-muted-foreground"
               )}
             >
-              {item.name}
+              Sign In
             </Link>
-          ))}
+          ) : (
+            <Link to="/profile">
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label="User Profile"
+                className="rounded-full h-9 w-9"
+              >
+                <User className="h-5 w-5" />
+              </Button>
+            </Link>
+          )}
           <Link to="/skills">
             <Button className="bg-gradient-hero shadow-soft hover:shadow-card transition-all">
               Get Started
@@ -108,21 +113,34 @@ const Navbar = () => {
                 {link.label}
               </Link>
             ))}
-            {accountNavItems.map((item) => (
+            {!isLogin ? (
               <Link
-                key={item.path}
-                to={item.path}
-                onClick={() => setMobileMenuOpen(false)}
+                key="/signIn"
+                to="/signIn"
+                onClick={() => setMobileMenuOpen(false)
+                }
                 className={cn(
                   "text-sm font-medium py-2 transition-colors",
-                  isActive(item.path)
+                  isActive("/signIn")
                     ? "text-primary"
                     : "text-muted-foreground hover:text-primary"
                 )}
               >
-                {item.name}
+                Sign In
               </Link>
-            ))}
+            ) : (
+              <Link to="/profile">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  aria-label="User Profile"
+                  className="rounded-full h-9 w-9"
+                >
+                  <User className="h-5 w-5" />
+                </Button>
+              </Link>
+            )
+            }
             <Link to="/skills" onClick={() => setMobileMenuOpen(false)}>
               <Button className="w-full bg-gradient-hero shadow-soft">
                 Get Started
