@@ -3,6 +3,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import userRoutes from './routes/user.routes.js';
+import recommenderRoutes from './routes/recommender.routes.js';
 
 dotenv.config({
     path:"./.env"
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/user', userRoutes);
+app.use('/api/recommender', recommenderRoutes);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {

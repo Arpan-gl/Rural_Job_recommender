@@ -63,6 +63,7 @@ model Match {
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
 
+  @@unique([userId, jobId])
   @@index([userId])
   @@index([jobId])
   @@index([match_score])
